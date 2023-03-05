@@ -3,19 +3,36 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-app.use('view engine', 'ejs');
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+app.set('view engine', 'ejs');
 
 const port = 3000;
 
 app.get('/', (req, res) => {
-    var today = new Date();
-    var currentDay = today.getDay();
+    const today = new Date();
 
-    if (currentDay === 6 || currentDay === 0) {
-        res.send("Yay it's the weekend!");
-    } else {
-        res.sendFile(__dirname + '/index.html');
-    }
+    const options = {
+        weekday: "long",
+        day: "numeric",
+        month: "long"
+    };
+
+    const day = today.toLocaleDateString("en-US", options);
+
+    res.render('list', {
+        kindOfDay: day
+    });
+
+});
+
+app.post('/', (req, res) => {
+    const task = req.body.item;
+    const li = document.createElement('li');
+    li.innerHTML = task;
+    document.querySelector('.list').appendChild(li);
 });
 
 
