@@ -1,38 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
+ <%- include('header'); -%>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To do list</title>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
+ <div class="box" id="heading">
+     <h1><%= listTitle %></h1>
+ </div>
 
-<body>
+ <div class="box">
 
-    <div class="box" id="heading">
-        <h1><%= kindOfDay %></h1>
-    </div>
+     <% for (let i = 0; i < newListItems.length; i++) { %>
+     <div class="item">
+         <input type="checkbox">
+         <p><%= newListItems[i] %></p>
+     </div>
+     <% } %>
 
-    <div class="box">
+     <form class="item" action="/" method="post">
+         <input type="text" name="newItem" placeholder="Add Task" autocomplete="off">
+         <button type="submit" name="list" value="<%= listTitle %>">+</button>
+     </form>
 
-        <% for (let i = 0; i < newListItems.length; i++) { %>
-        <div class="item">
-            <input type="checkbox">
-            <p><%= newListItems[i] %></p>
-        </div>
-        <% } %>
+ </div>
 
-        <form class="item" action="/" method="post">
-            <input type="text" name="newItem" placeholder="Add Task" autocomplete="off">
-            <button type="submit" name="button">+</button>
-        </form>
-        
-    </div>
-
-  
-
-</body>
-
-</html>
+ <%- include('footer'); -%>
