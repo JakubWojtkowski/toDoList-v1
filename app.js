@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const date = require(__dirname + '/date.js');
 
 const app = express();
@@ -12,10 +13,12 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static("public"));
 
+mongoose.connect("");
+
 const port = 3000;
 
-const items = ["Read the book", "Code", "Buy food"];
-const workItems = [];
+// const items = ["Read the book", "Code", "Buy food"];
+// const workItems = [];
 
 // Home Page
 
