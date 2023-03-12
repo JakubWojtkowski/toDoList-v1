@@ -13,7 +13,13 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static("public"));
 
-mongoose.connect("");
+mongoose.connect("mongodb://localhost:27017/todolistDB");
+
+const itemsSchema = mongoose.Schema({
+    name: String
+});
+
+const Item = mongoose.model("Item", itemsSchema);
 
 const port = 3000;
 
