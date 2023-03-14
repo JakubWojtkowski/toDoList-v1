@@ -12,6 +12,9 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static("public"));
 
+const port = 3000;
+
+// Mongoose part
 mongoose.connect("mongodb://localhost:27017/todolistDB");
 
 const itemsSchema = mongoose.Schema({
@@ -34,9 +37,6 @@ const item3 = new Item({
 
 const defaultItems = [item1, item2, item3];
 
-// Item.insertMany(defaultItems);
-
-const port = 3000;
 
 // Home Page
 
@@ -44,25 +44,37 @@ app.get('/', (req, res) => {
 
     Item.find().then((foundItems) => {
 
-        res.render('list', {
-            listTitle: "Today",
-            newListItems: foundItems
-        });
+        if (foundItems.length === 0) {
+
+            try {
+                Item.insertMany(defaultItems);
+                console.log("Succesfully saved default items to DB.");
+            } catch (err) {
+                console.error("Error meanwhile saving the default items to DB...\n" + err);
+            }
+            res.redirect('/');
+
+        } else {
+            res.render('list', {
+                listTitle: "Today",
+                newListItems: foundItems
+            });
+        }
     })
+
 });
 
 app.post('/', (req, res) => {
 
-    let item = req.body.newItem;
+    const itemName = req.body.newItem;
 
-    if (req.body.list === "Work List") {
-        workItems.push(item);
-        res.redirect('/work');
-    } else {
-        items.push(item);
-        res.redirect('/');
-    }
+    const item = new Item({
+        name: itemName
+    });
 
+    item.save();
+
+    res.redirect('/');
 });
 
 // Work Page
