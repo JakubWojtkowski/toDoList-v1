@@ -39,6 +39,12 @@ const item3 = new Item({
 
 const defaultItems = [item1, item2, item3];
 
+const customListSchema = {
+    name: String,
+    items: [itemsSchema]
+};
+
+const List = mongoose.model("List", customListSchema);
 
 // Home Page
 
@@ -66,6 +72,32 @@ app.get('/', (req, res) => {
 
 });
 
+// Custom list name
+
+app.get('/:customListName', (req, res) => {
+
+    const customListName = req.params.customListName;
+
+    List.findOne({name: customListName}, (err, foundList) => {
+        if (!err) {
+            if(!foundList) {
+
+                const list = new List({
+                    name: customListName,
+                    items: defaultItems
+                });
+                list.save();
+                res.redirect(`/${customListName}`);
+            } else {
+                res.render("list", {
+                    listTitle: foundList.name,
+                    newListItems: foundList.items
+                });
+            }
+        }
+    });
+});
+
 app.post('/', (req, res) => {
 
     const itemName = req.body.newItem;
@@ -90,14 +122,6 @@ app.post('/delete', (req, res) => {
     })
 });
 
-// Work Page
-
-app.get('/work', (req, res) => {
-    res.render("list", {
-        listTitle: "Work List",
-        newListItems: workItems
-    });
-});
 
 // About Page
 
