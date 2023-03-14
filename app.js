@@ -34,7 +34,7 @@ const item3 = new Item({
 
 const defaultItems = [item1, item2, item3];
 
-Item.insertMany(defaultItems);
+// Item.insertMany(defaultItems);
 
 const port = 3000;
 
@@ -42,11 +42,13 @@ const port = 3000;
 
 app.get('/', (req, res) => {
 
-    res.render('list', {
-        listTitle: "Today",
-        newListItems: items
-    });
+    Item.find().then((foundItems) => {
 
+        res.render('list', {
+            listTitle: "Today",
+            newListItems: foundItems
+        });
+    })
 });
 
 app.post('/', (req, res) => {
