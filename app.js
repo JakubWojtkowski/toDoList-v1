@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+mongoose.set('strictQuery', true);
+
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -75,6 +77,17 @@ app.post('/', (req, res) => {
     item.save();
 
     res.redirect('/');
+});
+
+app.post('/delete', (req, res) => {
+    const checkedItemId = req.body.checkbox;
+
+    Item.findByIdAndRemove(checkedItemId, (err) => {
+        if (!err) {
+            console.log("Succesfully deleted checked item");
+            res.redirect("/");
+        }
+    })
 });
 
 // Work Page
