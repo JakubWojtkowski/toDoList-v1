@@ -18,7 +18,8 @@ app.use(express.static("public"));
 const port = 3000;
 
 // Mongoose part
-mongoose.connect("mongodb://localhost:27017/todolistDB");
+mongoose.connect("mongodb+srv://wojtko:wojtkomongodb1234@cluster0.jmqpauu.mongodb.net/todolistDB");
+// mongoose.connect("mongodb://localhost:27017/todolistDB");
 
 const itemsSchema = mongoose.Schema({
     name: String
