@@ -115,10 +115,12 @@ app.post('/', (req, res) => {
         item.save();
         res.redirect('/');
     } else {
-        List.findOne({name: listName}, (err, foundList) => {
-           foundList.items.push(item);
-           foundList.save();
-           res.redirect(`/${listName}`); 
+        List.findOne({
+            name: listName
+        }, (err, foundList) => {
+            foundList.items.push(item);
+            foundList.save();
+            res.redirect(`/${listName}`);
         });
     }
 
@@ -136,7 +138,15 @@ app.post('/delete', (req, res) => {
             }
         });
     } else {
-        List.findOneAndUpdate({name: listName}, { $pull: {items: {_id: checkedItemId}} }, (err, foundList) => {
+        List.findOneAndUpdate({
+            name: listName
+        }, {
+            $pull: {
+                items: {
+                    _id: checkedItemId
+                }
+            }
+        }, (err, foundList) => {
             if (!err) {
                 res.redirect(`/${listName}`);
             }
